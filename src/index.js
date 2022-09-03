@@ -88,20 +88,35 @@ app.get("/",(req,res)=>{
     res.send("Hello world!");
 })
 
-app.post("/multiply",checkNumber,UnderAndOverFlow,(req,res)=>{
+app.post("/multiply",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
     const msg = "The product of given numbers";
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
     const ans = ActualNumber1*ActualNumber2;
+    if(ans>One_Million) {
+        res.send({
+            status:"error",
+            message:"Overflow"
+        })
+    }
+    else if (ans<-One_Million){
+        res.send({
+            status:"error",
+            message:"Underflow"
+        })
+    }
+   else{
     res.send({
         status:"success",
         message:msg,
         result:ans,
     });
+   }
+
 });
 
-app.post("/divide",checkNumber,UnderAndOverFlow,(req,res)=>{
+app.post("/divide",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
     if(num2===0) {
         res.send({
@@ -113,11 +128,25 @@ app.post("/divide",checkNumber,UnderAndOverFlow,(req,res)=>{
         const ActualNumber1 = Number(num1);
         const ActualNumber2 = Number(num2);
         const ans = ActualNumber1/ActualNumber2;
+        if(ans>One_Million) {
+            res.send({
+                status:"error",
+                message:"Overflow"
+            })
+        }
+        else if (ans<-One_Million){
+            res.send({
+                status:"error",
+                message:"Underflow"
+            })
+        }
+       else{
         res.send({
             status:"success",
             message:msg,
             result:ans,
         });
+       }
     }
 })
 // your code goes here
