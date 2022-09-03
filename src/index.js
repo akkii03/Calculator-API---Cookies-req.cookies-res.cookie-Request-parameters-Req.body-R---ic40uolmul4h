@@ -76,7 +76,7 @@ function UnderAndOverFlow (req,res,next) {
     next();
 }
 
-app.put("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
+app.post("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
@@ -109,7 +109,7 @@ app.put("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
     
 });
 
-app.put("/sub",checkNumber,(req,res)=>{
+app.post("/sub",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
@@ -140,7 +140,7 @@ app.put("/sub",checkNumber,(req,res)=>{
     res.send(check());
 });
 
-app.put("/multiply",checkNumber,(req,res)=>{
+app.post("/multiply",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
     const msg = "The product of given numbers";
     const ActualNumber1 = Number(num1);
@@ -149,7 +149,7 @@ app.put("/multiply",checkNumber,(req,res)=>{
     res.send(result(ans,msg));
 });
 
-app.put("/divide",checkNumber,(req,res)=>{
+app.post("/divide",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
     if(num1===0) {
         res.send({
