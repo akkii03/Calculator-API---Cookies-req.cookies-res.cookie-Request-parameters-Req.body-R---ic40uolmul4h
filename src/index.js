@@ -15,27 +15,7 @@ app.use(bodyParser.json());
 const One_Million = 1_000_000;
 
 
-function result(result,msg) {
-    if(result>One_Million) {
-       return({
-            status:"error",
-            message:"Overflow"
-        });
-    }
-    else if(result<-One_Million ) {
-        return({
-            status:"error",
-            message:"Underflow"
-        });
-    }
-    else{
-        return({
-            status:"success",
-            message:msg,
-            result:result,
-        })
-    }
-}
+
 
 function check (num) {
     return !Number.isNaN(Number(num));
@@ -48,7 +28,7 @@ function check (num) {
 function checkNumber (req,res,next) {
     const {num1,num2} = req.body;
     const inValid = !num1 || !num2;
-    if(inValid || !check(num1) || !check(num2) || num1=="" || num2 =="" ) {
+    if(inValid || !check(num1) || !check(num2) || num1=="" || num2 =="" || num1<0 || num2<0 ) {
         res.send({
             status:"error",
             message:"Invalid data types"
@@ -61,13 +41,13 @@ function UnderAndOverFlow (req,res,next) {
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
-    if(ActualNumber1>One_Million || ActualNumber1>One_Million) {
+    if(ActualNumber1>One_Million || ActualNumber2>One_Million) {
         res.send({
             status:"error",
             message:"Overflow"
         });
     }
-    else if(ActualNumber1<-One_Million || ActualNumber1<-One_Million) {
+    else if(ActualNumber1<-One_Million || ActualNumber2<-One_Million) {
         res.send({
             status:"error",
             message:"Underflow"
@@ -83,75 +63,47 @@ app.post("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
     const result = ActualNumber1+ActualNumber2;
     const msg = "the sum of given two numbers";
    
-    function check2 () {
-        if(result>One_Million) {
-            return({
-                 status:"error",
-                 message:"Overflow"
-             });
-         }
-         else if(result<-One_Million ) {
-             return({
-                 status:"error",
-                 message:"Underflow"
-             });
-         }
-         else{
-             return({
-                 status:"success",
-                 message:msg,
-                 result:result,
-             })
-         }
-    }
-
-    res.send(check2());
-    
+    res.send({
+        status:"success",
+        message:msg,
+        sum:result,
+    });   
 });
 
-app.post("/sub",checkNumber,(req,res)=>{
+app.post("/sub",checkNumber,UnderAndOverFlow,(req,res)=>{
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
     const result = ActualNumber1-ActualNumber2;
-    console.log("u r in sub api");
     const msg = "the difference of given two numbers";
-    function check () {
-        if(result>One_Million) {
-            return({
-                 status:"error",
-                 message:"Overflow"
-             });
-         }
-         else if(result<-One_Million ) {
-             return({
-                 status:"error",
-                 message:"Underflow"
-             });
-         }
-         else{
-             return({
-                 status:"success",
-                 message:msg,
-                 result:result,
-             })
-         }
-    }
-    res.send(check());
+    
+    res.send({
+        status:"success",
+        message:msg,
+        difference:result,
+    });
 });
 
-app.post("/multiply",checkNumber,(req,res)=>{
+app.get("/",(req,res)=>{
+    res.send("Hello world!");
+})
+
+app.post("/multiply",checkNumber,UnderAndOverFlow,(req,res)=>{
     const {num1,num2} = req.body;
     const msg = "The product of given numbers";
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
     const ans = ActualNumber1*ActualNumber2;
-    res.send(result(ans,msg));
+    res.send({
+        status:"success",
+        message:msg,
+        result:ans,
+    });
 });
 
-app.post("/divide",checkNumber,(req,res)=>{
+app.post("/divide",checkNumber,UnderAndOverFlow,(req,res)=>{
     const {num1,num2} = req.body;
-    if(num1===0) {
+    if(num2===0) {
         res.send({
             status:"error",
             message:"Cannot divide by zero"
@@ -161,13 +113,11 @@ app.post("/divide",checkNumber,(req,res)=>{
         const ActualNumber1 = Number(num1);
         const ActualNumber2 = Number(num2);
         const ans = ActualNumber1/ActualNumber2;
-        if(ActualNumber2==0) {
-            res.send({
-                status:"error",
-                message:"Cannot divide by zero",
-            })
-        }
-        res.send(result(ans,msg));
+        res.send({
+            status:"success",
+            message:msg,
+            result:ans,
+        });
     }
 })
 // your code goes here
