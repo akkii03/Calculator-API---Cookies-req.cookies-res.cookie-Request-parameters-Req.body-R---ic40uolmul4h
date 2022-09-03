@@ -60,28 +60,58 @@ app.post("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
-    const result = ActualNumber1+ActualNumber2;
+    const sum = ActualNumber1+ActualNumber2;
     const msg = "the sum of given two numbers";
-   
+    if(ans>One_Million) {
+        res.send({
+            status:"error",
+            message:"Overflow"
+        })
+    }
+    else if (ans<-One_Million){
+        res.send({
+            status:"error",
+            message:"Underflow"
+        })
+    }
+   else{
     res.send({
         status:"success",
         message:msg,
-        sum:result,
-    });   
+        sum:sum,
+    });
+   }
+ 
 });
 
-app.post("/sub",checkNumber,UnderAndOverFlow,(req,res)=>{
+app.post("/sub",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
-    const result = ActualNumber1-ActualNumber2;
+    const diff = ActualNumber1-ActualNumber2;
+
     const msg = "the difference of given two numbers";
-    
+    if(diff>One_Million) {
+        res.send({
+            status:"error",
+            message:"Overflow"
+        })
+    }
+    else if (diff<-One_Million){
+        res.send({
+            status:"error",
+            message:"Underflow"
+         
+        })
+    }
+   else{
     res.send({
         status:"success",
         message:msg,
-        difference:result,
+        differnce:diff,
     });
+   }
+
 });
 
 app.get("/",(req,res)=>{
@@ -118,7 +148,7 @@ app.post("/multiply",checkNumber,(req,res)=>{
 
 app.post("/divide",checkNumber,(req,res)=>{
     const {num1,num2} = req.body;
-    if(num2===0) {
+    if(num2==0) {
         res.send({
             status:"error",
             message:"Cannot divide by zero"
