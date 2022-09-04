@@ -62,13 +62,13 @@ app.post("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
     const ActualNumber2 = Number(num2);
     const sum = ActualNumber1+ActualNumber2;
     const msg = "the sum of given two numbers";
-    if(ans>One_Million) {
+    if(sum>One_Million) {
         res.send({
             status:"error",
             message:"Overflow"
         })
     }
-    else if (ans<-One_Million){
+    else if (sum<-One_Million){
         res.send({
             status:"error",
             message:"Underflow"
@@ -84,7 +84,7 @@ app.post("/add",checkNumber,UnderAndOverFlow,(req,res)=>{
  
 });
 
-app.post("/sub",checkNumber,(req,res)=>{
+app.post("/sub",checkNumber,UnderAndOverFlow,(req,res)=>{
     const {num1,num2} = req.body;
     const ActualNumber1 = Number(num1);
     const ActualNumber2 = Number(num2);
@@ -99,8 +99,9 @@ app.post("/sub",checkNumber,(req,res)=>{
     }
     else if (diff<-One_Million){
         res.send({
-            status:"error",
-            message:"Underflow"
+            // status:"error",
+            // message:"Underflow"
+            diff
          
         })
     }
